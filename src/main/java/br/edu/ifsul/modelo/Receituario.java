@@ -98,9 +98,7 @@ public class Receituario implements Serializable{
 
     public void setMedicamentos(Set<Medicamento> medicamentos) {
         this.medicamentos = medicamentos;
-    }
-    
-    
+    }    
 
     @Override
     public int hashCode() {
@@ -132,6 +130,14 @@ public class Receituario implements Serializable{
         return Objects.equals(this.validade, other.validade);
     }
     
-     
+    public void adicionarMedicamento(Medicamento med){
+       if(medicamentos.size() == 0){
+           medicamentos = new HashSet<>();
+       }
+       medicamentos.add(med);
+    }
     
+    public void removerMedicamento(int index){
+        medicamentos.remove(index);
+    }
 }

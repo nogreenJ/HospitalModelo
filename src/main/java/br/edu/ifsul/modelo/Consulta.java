@@ -65,7 +65,7 @@ public class Consulta implements Serializable {
     
     @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, 
             orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Exame> jogadores = new ArrayList<>();
+    private List<Exame> Exames = new ArrayList<>();
     
     @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, 
             orphanRemoval = true, fetch = FetchType.LAZY)
@@ -132,11 +132,11 @@ public class Consulta implements Serializable {
     }
 
     public List<Exame> getJogadores() {
-        return jogadores;
+        return Exames;
     }
 
-    public void setJogadores(List<Exame> jogadores) {
-        this.jogadores = jogadores;
+    public void setJogadores(List<Exame> Exames) {
+        this.Exames = Exames;
     }
 
     public List<Receituario> getReceituarios() {
