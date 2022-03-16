@@ -17,6 +17,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
@@ -24,6 +25,8 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 /**
  *
@@ -57,18 +60,22 @@ public class Consulta implements Serializable {
     
     @NotNull(message = "O médico deve ser informado")
     @JoinColumn(name = "medico", referencedColumnName = "id", nullable = false)
+    @ManyToOne
     private Medico medico;
     
     @NotNull(message = "O paciente deve ser informado")
     @JoinColumn(name = "paciente", referencedColumnName = "id", nullable = false)
+    @ManyToOne
     private Paciente paciente;
     
     @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, 
             orphanRemoval = true, fetch = FetchType.LAZY)
-    private List<Exame> Exames = new ArrayList<>();
+    @Fetch(value = FetchMode.SUBSELECT)
+    private List<Exame> exames = new ArrayList<>();
     
     @OneToMany(mappedBy = "consulta", cascade = CascadeType.ALL, 
             orphanRemoval = true, fetch = FetchType.LAZY)
+    @Fetch(value = FetchMode.SUBSELECT)
     private List<Receituario> receituarios = new ArrayList<>();
     
     public Consulta(){
@@ -131,12 +138,12 @@ public class Consulta implements Serializable {
         this.paciente = paciente;
     }
 
-    public List<Exame> getJogadores() {
-        return Exames;
+    public List<Exame> getExames() {
+        return exames;
     }
 
-    public void setJogadores(List<Exame> Exames) {
-        this.Exames = Exames;
+    public void setExames(List<Exame> Exames) {
+        this.exames = Exames;
     }
 
     public List<Receituario> getReceituarios() {
@@ -145,6 +152,24 @@ public class Consulta implements Serializable {
 
     public void setReceituarios(List<Receituario> receituarios) {
         this.receituarios = receituarios;
+    }
+    
+    public void adicionarExame(Exame exame){
+        exame.setConsulta(this);
+        exames.add(exame);
+    }
+    
+    public void removerExame(int index){
+        exames.remove(index);
+    }
+    
+    public void adicionarReceituario(Receituario receituario){
+        receituario.setConsulta(this);
+        receituarios.add(receituario);
+    }
+    
+    public void removerReceituario(int index){
+        receituarios.remove(index);
     }
 
     @Override
